@@ -279,34 +279,43 @@ function startBot() {
       'im.message.receive_v1': async (data) => {
         try {
           const {
-            message: { chat_id, content, message_type, message_id }
+            message: { chat_id, content, message_type, message_id, mentions }
           } = data;
 
-          // 解析并打印完整的消息内容
-          const parsedContent = JSON.parse(content);
           console.log('============= Received message =============');
           console.log('chat_id:', chat_id);
           console.log('message_id:', message_id);
           console.log('message_type:', message_type);
-          console.log('raw content:', content);
-        //   console.log('parsed content:', parsedContent);
-        //   console.log('text content:', parsedContent.text);
+          console.log('content:', content);
+          console.log('mentions:', mentions);
           console.log('==========================================');
 
           // 1. 立即返回成功响应给飞书，避免重发
           const response = { code: 0, msg: "success" };
           
-          // 2. 异步处理实际的消息逻辑
-          if (message_type === 'text') {
-            handleMessageAsync(chat_id, content, message_id);
-          } else {
-            console.log('Ignoring non-text message');
+          // 2. 检查是否是文本消息且是否 @ 了机器人
+          if (message_type === 'text' && mentions && mentions.length > 0) {
+            // 检查是否 @ 了本机器人
+            const isBotMentioned = mentions.some(mention => 
+              mention.name === '你的机器人名称' || 
+              mention.id === '你的机器人 ID'
+            );
+
+            if (isBotMentioned) {
+              // 移除消息中的 @ 部分，只保留实际内容
+              const parsedContent = JSON.parse(content);
+              let userInput = parsedContent.text.replace(/@[^@]+/g, '').trim();
+              
+              // 如果消息不为空，则处理
+              if (userInput) {
+                handleMessageAsync(chat_id, JSON.stringify({ text: userInput }), message_id);
+              }
+            }
           }
           
           return response;
         } catch (error) {
           console.error('Error in message handler:', error);
-          console.error('Error details:', error.message);
           return { code: -1, msg: "failed" };
         }
       }
