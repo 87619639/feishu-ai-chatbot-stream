@@ -2,6 +2,11 @@
 
 一个基于 OpenAI GPT 模型的飞书机器人,流式打字机效果，支持智能对话、上下文记忆、流式响应等功能。飞书 ×（GPT + CLaude + Gemini）+ 打字机效果.
 
+## 最终效果
+
+![image](https://github.com/user-attachments/assets/d9fc4182-025f-4474-9fd8-c1187b30122d)
+
+
 ## 功能特点
 
 - 🤖 基于 OpenAI 的 GPT-4/3.5 模型的智能对话,可自定义模型
