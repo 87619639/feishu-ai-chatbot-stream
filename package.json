@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "start": "node index.js"
+  },
+  "name": "feishu-chatbot-stream-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@larksuiteoapi/node-sdk": "^1.41.0",
+    "dotenv": "^16.4.7",
+    "openai": "^4.77.0"
+  }
+}
