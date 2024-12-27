@@ -38,7 +38,8 @@
    - `im:message.group_at_msg`
    - `im:message.p2p_msg`
 5. 在"事件订阅"中配置长连接，需要先启动本项目后，才能保存成功。
-![image](https://github.com/user-attachments/assets/2a021a97-96d1-40f8-b9c4-2abb45aef9bb)
+![image](https://github.com/user-attachments/assets/a1d058ff-4951-481b-a5fe-1aff5db5f0ce)
+
 
 
 
