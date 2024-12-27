@@ -194,8 +194,8 @@ async function updateMessage(chatId, messageId, content, inputLength, isComplete
   try {
     // 根据是否完成选择不同的 emoji 和文字
     const statusMessage = isCompleted 
-      ? "✅ 如需更多帮助，请继续提问。" 
-      : "⏳ 回复中，请等待...";
+      ? "✅ " 
+      : "⏳...";
     
     await client.im.message.patch({
       path: {
@@ -279,13 +279,14 @@ function startBot() {
       'im.message.receive_v1': async (data) => {
         try {
           const {
-            message: { chat_id, content, message_type, message_id, mentions }
+            message: { chat_id, content, message_type, message_id, mentions, chat_type }
           } = data;
 
           console.log('============= Received message =============');
           console.log('chat_id:', chat_id);
           console.log('message_id:', message_id);
           console.log('message_type:', message_type);
+          console.log('chat_type:', chat_type);
           console.log('content:', content);
           console.log('mentions:', mentions);
           console.log('==========================================');
@@ -293,22 +294,27 @@ function startBot() {
           // 1. 立即返回成功响应给飞书，避免重发
           const response = { code: 0, msg: "success" };
           
-          // 2. 检查是否是文本消息且是否 @ 了机器人
-          if (message_type === 'text' && mentions && mentions.length > 0) {
-            // 检查是否 @ 了本机器人
-            const isBotMentioned = mentions.some(mention => 
-              mention.name === '你的机器人名称' || 
-              mention.id === '你的机器人 ID'
-            );
-
-            if (isBotMentioned) {
-              // 移除消息中的 @ 部分，只保留实际内容
-              const parsedContent = JSON.parse(content);
-              let userInput = parsedContent.text.replace(/@[^@]+/g, '').trim();
-              
-              // 如果消息不为空，则处理
-              if (userInput) {
-                handleMessageAsync(chat_id, JSON.stringify({ text: userInput }), message_id);
+          // 2. 检查是否是文本消息
+          if (message_type === 'text') {
+            // 单聊消息直接处理
+            if (chat_type === 'p2p') {
+              handleMessageAsync(chat_id, content, message_id);
+            } 
+            // 群聊消息需要检查是否 @ 机器人
+            else if (chat_type === 'group' && mentions && mentions.length > 0) {
+              // 检查是否 @ 了本机器人
+              const isBotMentioned = mentions.some(mention => 
+                mention.name === process.env.BOT_NAME
+              );
+              if (isBotMentioned) {
+                // 移除消息中的 @ 部分，只保留实际内容
+                const parsedContent = JSON.parse(content);
+                const bot_group_name = mentions[0].key;
+                let userInput = parsedContent.text.replace(`${bot_group_name}`, '').trim();
+                // 如果消息不为空，则处理
+                if (userInput) {
+                  handleMessageAsync(chat_id, JSON.stringify({ text: userInput }), message_id);
+                }
               }
             }
           }
@@ -316,6 +322,7 @@ function startBot() {
           return response;
         } catch (error) {
           console.error('Error in message handler:', error);
+          console.error('Error details:', error.message);
           return { code: -1, msg: "failed" };
         }
       }
