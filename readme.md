@@ -23,6 +23,7 @@
 
 ### 1. 配置飞书机器人
 
+特别说明：配置第五步时候需要先把项目部署成功后启动才能配置第5步。
 1. 访问[飞书开放平台](https://open.feishu.cn/app)
 2. 创建一个新应用
 3. 获取 App ID 和 App Secret
@@ -30,7 +31,10 @@
    - `im:message`
    - `im:message.group_at_msg`
    - `im:message.p2p_msg`
-5. 在"事件订阅"中配置长连接
+5. 在"事件订阅"中配置长连接，需要先启动本项目后，才能保存成功。
+![image](https://github.com/user-attachments/assets/2a021a97-96d1-40f8-b9c4-2abb45aef9bb)
+
+
 
 ### 2. 安装依赖
 ```bash
