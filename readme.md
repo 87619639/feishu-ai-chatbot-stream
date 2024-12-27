@@ -4,7 +4,8 @@
 
 ## 最终效果
 
-![image](https://github.com/user-attachments/assets/d9fc4182-025f-4474-9fd8-c1187b30122d)
+![image](https://github.com/user-attachments/assets/6f1386d7-3adf-443b-8f62-70bb93d01b21)
+
 
 
 ## 功能特点
