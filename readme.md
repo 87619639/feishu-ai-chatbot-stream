@@ -1,4 +1,4 @@
-# 飞书 AI 助手
+# 飞书 AI-ChatGPT Gemini Claude 流式聊天 助手
 
 一个基于 OpenAI GPT 模型的飞书机器人,流式打字机效果，支持智能对话、上下文记忆、流式响应等功能。飞书 ×（GPT + CLaude + Gemini）+ 打字机效果.
 
